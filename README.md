@@ -31,3 +31,11 @@ CLAUDE.md         LUNATALK JSX 규칙 요약 (작업할 때 먼저 읽는 파일
 
 미리보기에서는 `LT` 함수가 가짜로 동작합니다. `LT.sendToAI`, `LT.setValue` 같은 실제 동작은 채팅방에서만 확인할 수 있습니다.
 로컬에서는 `LT` 를 흉내 낸 가짜 객체를 붙여 Playwright 로 화면을 확인합니다.
+
+## 위젯
+
+| 위젯 | 폴더 | 설명 |
+|---|---|---|
+| 주식 차트 | `widgets/stock/` | 모바일 증권앱 화면. 캔들·이동평균·거래량·현재가 표시, 터치 십자선, 매수/매도 버튼. 가상 시세 |
+
+미리보기: 저장소 루트에서 `python3 -m http.server` 를 띄우고 `dev/preview.html?w=stock&name=루나전자&price=71200&prev=70500` 를 엽니다.
