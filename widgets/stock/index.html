@@ -197,7 +197,7 @@ async function load(){
 }
 async function save(st){
   const j=JSON.stringify(st);if(j.length>1900)return{ok:false,error:'보유 종목이 너무 많아요'};
-  return LTok?await LT.setValue('PF',j):{ok:true};
+  const r=LTok?await LT.setValue('PF',j):0;return r&&r.ok===false?r:{ok:true};
 }
 function mine(){
   const [q,avg]=PF.pos[code]||[0,0],val=q*price,cost=q*avg,pl=val-cost,others=Object.entries(PF.pos).filter(e=>e[0]!=code);
