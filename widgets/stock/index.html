@@ -1,131 +1,249 @@
-<!-- 주식 차트 위젯 (모바일). 태그: <lunatalk_asset id="stock" name="루나전자" code="LUNA" price="71200" prev="70500" seed="a1" /> -->
+<!-- 주식 위젯 (모바일). 사용법은 README.md 참고
+<lunatalk_asset id="stock" name="루나전자" code="LUNA" price="71200" prev="70500" seed="a1" day="0" date="2026-10-10" theme="light" /> -->
 <style>
+:root{--bg:#fff;--fg:#191f28;--mut:#8b95a1;--mut2:#6b7684;--line:#e5e8eb;--grid:#f2f4f6;--card:#f7f8fa;--up:#f04452;--dn:#3182f6;--upbg:rgba(240,68,82,.1);--dnbg:rgba(49,130,246,.1)}
+.dark{--bg:#17171c;--fg:#f2f4f6;--mut:#6b7684;--mut2:#9ea6b0;--line:#2c2c35;--grid:#23232b;--card:#202027;--up:#f6616c;--dn:#4d9bff;--upbg:rgba(246,97,108,.16);--dnbg:rgba(77,155,255,.16)}
 *{box-sizing:border-box;margin:0}
-body{background:#fff;color:#191f28;font:14px/1.4 -apple-system,"Pretendard","Noto Sans KR",sans-serif;-webkit-text-size-adjust:100%}
-#w{max-width:480px;margin:0 auto;padding:12px 14px 14px;user-select:none}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font:14px/1.4 -apple-system,"Pretendard","Noto Sans KR",sans-serif;-webkit-text-size-adjust:100%}
+#w{max-width:480px;margin:0 auto;padding:12px 14px 16px}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
+input{font:inherit;color:inherit;user-select:text;-webkit-user-select:text}
+.up{color:var(--up)}.dn{color:var(--dn)}
 .top{display:flex;align-items:baseline;gap:8px}
 .name{font-size:18px;font-weight:700}
-.sub{font-size:11px;color:#8b95a1}
-.px{display:flex;align-items:baseline;gap:8px;margin:8px 0 10px;flex-wrap:wrap}
+.sub{font-size:11px;color:var(--mut)}
+.px{display:flex;align-items:baseline;gap:8px;margin:8px 0 2px;flex-wrap:wrap}
 .price{font-size:28px;font-weight:700;letter-spacing:-.5px}
-.chg{font-size:14px}
-.up{color:#f04452}.dn{color:#3182f6}
-.per{display:flex;border:1px solid #d1d6db;border-radius:6px;overflow:hidden;width:max-content}
-.per button{border:0;background:#fff;padding:6px 16px;font:inherit;color:#6b7684;cursor:pointer;border-right:1px solid #e5e8eb}
+.tabs{display:flex;gap:20px;border-bottom:1px solid var(--line);margin:8px 0 12px}
+.tabs button{padding:8px 2px;color:var(--mut);font-weight:600;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs button.on{color:var(--fg);border-color:var(--fg)}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.per{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.per button{padding:6px 16px;color:var(--mut2);border-right:1px solid var(--line)}
 .per button:last-child{border:0}
-.per button.on{background:#191f28;color:#fff;font-weight:700}
-.info{font-size:11px;color:#6b7684;min-height:32px;margin-top:8px}
-.info b{font-weight:600}
-canvas{display:block;width:100%;touch-action:pan-y}
-.ord{display:flex;gap:8px;margin-top:12px}
-.ord button{flex:1;border:0;border-radius:8px;padding:12px;font:700 15px inherit;font-family:inherit;color:#fff;cursor:pointer}
-.ord .buy{background:#f04452}.ord .sell{background:#3182f6}
-.ord button:active{opacity:.8}
-.msg{font-size:12px;color:#8b95a1;margin-top:6px;min-height:16px;text-align:center}
+.per button.on{background:var(--fg);color:var(--bg);font-weight:700}
+.chip{display:flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:14px;padding:4px 10px;font-size:12px;color:var(--mut2)}
+.chip.on{border-color:var(--fg);color:var(--fg);font-weight:600}
+.chip i{width:8px;height:8px;border-radius:2px;background:#ff9500}
+.info{font-size:11px;color:var(--mut2);min-height:32px;margin:8px 0 2px}
+.info b{font-weight:600;color:var(--mut)}
+canvas{display:block;width:100%;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.ord,.sheet .ord{display:flex;gap:8px;margin-top:12px}
+.ord button{flex:1;border-radius:8px;padding:12px;font-weight:700;font-size:15px;color:#fff}
+.ord .buy{background:var(--up)}.ord .sell{background:var(--dn)}.ord .gray{background:var(--card);color:var(--mut2)}
+.ord button:active{opacity:.8}.ord button:disabled{opacity:.35}
+.msg{font-size:12px;color:var(--mut);margin-top:8px;min-height:16px;text-align:center}
+.bk{display:grid;grid-template-columns:1fr 92px 1fr;height:30px;align-items:center;font-size:12px}
+.bk .q{position:relative;height:100%;display:flex;align-items:center;padding:0 6px}
+.bk .q i{position:absolute;top:2px;bottom:2px}
+.bk .q span{position:relative}
+.bk .a{justify-content:flex-end;background:var(--dnbg)}.bk .a i{right:0;background:var(--dnbg)}
+.bk .b{background:var(--upbg)}.bk .b i{left:0;background:var(--upbg)}
+.bk .p{text-align:center;font-weight:600;line-height:1.1}.bk .p small{display:block;font-size:10px;font-weight:400}
+.bk .cur{outline:1.5px solid var(--fg);outline-offset:-1.5px;border-radius:3px}
+.bk.sum{color:var(--mut2);font-size:11px;height:26px;border-top:1px solid var(--line);margin-top:4px}
+.card{background:var(--card);border-radius:10px;padding:6px 14px}
+.card .r{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)}
+.card .r:last-child{border:0}.card .r span:first-child{color:var(--mut2)}
+.rst{display:block;margin:10px auto 0;font-size:11px;color:var(--mut)}
+.sheet{background:var(--card);border-radius:12px;padding:14px;margin-top:12px}
+.sheet .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.stp{display:flex;gap:8px;margin-bottom:8px}
+.stp button{width:44px;height:44px;border-radius:8px;background:var(--bg);border:1px solid var(--line);font-size:20px}
+.stp input{flex:1;min-width:0;text-align:center;font-size:18px;font-weight:700;background:var(--bg);border:1px solid var(--line);border-radius:8px}
+.chips{display:flex;gap:6px;margin-bottom:12px}
+.chips button{flex:1;padding:7px 0;border-radius:6px;background:var(--bg);border:1px solid var(--line);font-size:12px;color:var(--mut2)}
+.chk{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--mut2);margin-top:10px}
 </style>
 <div id="w">
   <div class="top"><span class="name" id="nm"></span><span class="sub" id="sb"></span></div>
-  <div class="px"><span class="price" id="pr"></span><span class="chg" id="ch"></span></div>
-  <div class="per" id="per"><button data-n="1" class="on">일</button><button data-n="5">주</button><button data-n="21">월</button></div>
-  <div class="info" id="info"></div>
-  <canvas id="cv"></canvas>
-  <div class="ord"><button class="buy" id="buy">매수</button><button class="sell" id="sell">매도</button></div>
+  <div class="px"><span class="price" id="pr"></span><span id="ch"></span></div>
+  <div class="tabs" id="tabs"><button data-t="c" class="on">차트</button><button data-t="b">호가</button><button data-t="m">내 주식</button></div>
+
+  <section id="pc">
+    <div class="bar">
+      <div class="per" id="per"><button data-n="1" class="on">일</button><button data-n="5">주</button><button data-n="21">월</button></div>
+      <button class="chip on" id="bMA"><i></i>이동평균</button>
+      <button class="chip" id="bIC"><i style="background:#34c759"></i>일목균형표</button>
+    </div>
+    <div class="info" id="info"></div>
+    <canvas id="cv"></canvas>
+  </section>
+  <section id="pb" hidden></section>
+  <section id="pm" hidden></section>
+
+  <div class="ord" id="ord"><button class="buy" id="buy">매수</button><button class="sell" id="sell">매도</button></div>
+  <div class="sheet" id="sheet" hidden>
+    <div class="row"><b id="shT"></b><span class="sub" id="shA"></span></div>
+    <div class="stp"><button id="qm">−</button><input id="qi" inputmode="numeric" value="1"><button id="qp">+</button></div>
+    <div class="chips"><button data-a="1">+1</button><button data-a="10">+10</button><button data-a="100">+100</button><button data-a="max">최대</button></div>
+    <div class="row" style="margin:0"><span class="sub">시장가 주문 금액</span><b id="shS"></b></div>
+    <label class="chk"><input type="checkbox" id="nf"> 체결을 AI에게도 알리기 (한 턴 요금)</label>
+    <div class="ord"><button class="gray" id="cancel">취소</button><button id="ok"></button></div>
+  </div>
   <div class="msg" id="msg"></div>
 </div>
 <script>
-const V=(typeof LT!=='undefined'&&LT.vars)||{};
+const $=id=>document.getElementById(id), LTok=typeof LT!=='undefined';
+const V=(LTok&&LT.vars)||{}, num=(x,d)=>isFinite(parseFloat(x))?parseFloat(x):d;
 const name=V.name||'루나전자', code=V.code||'LUNA', cur=V.cur||'원', market=V.market||'루나거래소';
-const price=+V.price||71200, prev=+V.prev||Math.round(price*.99);
-const UP='#f04452', DN='#3182f6', fmt=n=>Math.round(n).toLocaleString('ko-KR');
+const KRW=cur==='원'||cur==='KRW', dg=KRW?0:2;
+const price=num(V.price,71200), prev=num(V.prev,+(price*.99).toFixed(dg));
+const fmt=n=>(+n).toLocaleString('ko-KR',{minimumFractionDigits:dg,maximumFractionDigits:dg});
+const int=n=>Math.round(n).toLocaleString('ko-KR');
+const sgn=n=>n>0?'up':n<0?'dn':'';
+document.documentElement.className=V.theme==='dark'?'dark':'';
+const css=getComputedStyle(document.documentElement), col=n=>css.getPropertyValue(n).trim();
 
-// 같은 seed 면 항상 같은 차트가 나온다
-let s=[...(V.seed||name)].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7);
-const rnd=()=>(s=(s+0x6D2B79F5)>>>0,((t=>(t=Math.imul(t^t>>>15,t|1),t^=t+Math.imul(t^t>>>7,t|61),((t^t>>>14)>>>0)/4294967296))(s)));
-const N=500, D=[]; let c=100, trend=0;
+// ---- 가상 시세: seed 와 day 가 같으면 항상 같은 차트 ----
+const mk=a=>()=>(a=(a+0x6D2B79F5)>>>0,((t=>(t=Math.imul(t^t>>>15,t|1),t^=t+Math.imul(t^t>>>7,t|61),((t^t>>>14)>>>0)/4294967296))(a)));
+const rnd=mk([...(V.seed||name)].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7));
+const N=400+Math.max(0,Math.min(num(V.day,0)|0,300)), D=[]; let c0=100, trend=0;
 for(let i=0;i<N;i++){
   trend=trend*.97+(rnd()-.5)*.004;
-  const o=c*(1+(rnd()-.5)*.012), cl=o*(1+(rnd()-.5)*.045+trend);
-  D.push({o,c:cl,h:Math.max(o,cl)*(1+rnd()*.015),l:Math.min(o,cl)*(1-rnd()*.015),v:(.4+rnd()*1.2)*(1+Math.abs(cl-o)/o*30)*1e5});
-  c=cl;
+  const o=c0*(1+(rnd()-.5)*.012), cl=o*(1+(rnd()-.5)*.045+trend);
+  D.push({i,o,c:cl,h:Math.max(o,cl)*(1+rnd()*.015),l:Math.min(o,cl)*(1-rnd()*.015),v:(.4+rnd()*1.2)*(1+Math.abs(cl-o)/o*30)*1e5});
+  c0=cl;
 }
-// 끝에서 두 번째 종가 = prev, 마지막 종가 = price 로 맞춘다
 const k=prev/D[N-2].c; D.forEach(d=>{d.o*=k;d.c*=k;d.h*=k;d.l*=k});
 const L=D[N-1]; L.o=prev; L.c=price; L.h=Math.max(L.h,price,prev); L.l=Math.min(L.l,price,prev);
-
-const DAY0=new Date(); const date=i=>{const d=new Date(DAY0);d.setDate(d.getDate()-(N-1-i)*1.4);return (d.getMonth()+1)+'.'+String(d.getDate()).padStart(2,'0')};
-const group=n=>{ if(n==1) return D; const r=[]; for(let i=N%n;i<N;i+=n){const g=D.slice(i,i+n);
-  r.push({o:g[0].o,c:g[g.length-1].c,h:Math.max(...g.map(x=>x.h)),l:Math.min(...g.map(x=>x.l)),v:g.reduce((a,x)=>a+x.v,0),i:i+g.length-1});} return r};
+const DT=[]; {let d=new Date(isNaN(Date.parse(V.date))?Date.now():Date.parse(V.date));
+  for(let i=N-1;i>=0;i--){while(d.getDay()%6==0)d.setDate(d.getDate()-1);DT[i]=new Date(d);d.setDate(d.getDate()-1)}}
+const md=d=>(d.getMonth()+1)+'.'+String(d.getDate()).padStart(2,'0');
+const group=n=>{if(n==1)return D;const r=[];for(let i=N%n;i<N;i+=n){const g=D.slice(i,i+n);
+  r.push({i:i+g.length-1,o:g[0].o,c:g[g.length-1].c,h:Math.max(...g.map(x=>x.h)),l:Math.min(...g.map(x=>x.l)),v:g.reduce((a,x)=>a+x.v,0)})}return r};
 const ma=(a,n)=>a.map((_,i)=>i<n-1?null:a.slice(i-n+1,i+1).reduce((x,y)=>x+y.c,0)/n);
+const mid=(a,i,n)=>{if(i<n-1)return null;const s=a.slice(i-n+1,i+1);return(Math.max(...s.map(x=>x.h))+Math.min(...s.map(x=>x.l)))/2};
+const ichi=a=>{const ten=a.map((_,i)=>mid(a,i,9)),kij=a.map((_,i)=>mid(a,i,26)),sa=[],sb=[],chi=[];
+  a.forEach((_,i)=>{if(ten[i]!=null&&kij[i]!=null)sa[i+26]=(ten[i]+kij[i])/2;sb[i+26]=mid(a,i,52);if(i+26<a.length)chi[i]=a[i+26].c});
+  return{ten,kij,sa,sb,chi}};
 
-let per=1, hover=-1, view=[];
-const cv=document.getElementById('cv'), g=cv.getContext('2d');
-const H=330, PH=230, VH=62, R=58; // 전체 높이, 가격 영역, 거래량 영역, 오른쪽 눈금 폭
-
+// ---- 차트 ----
+let per=1,hover=-1,view=[],geo={cw:1,cnt:1},showMA=true,showIC=false;
+const cv=$('cv'),g=cv.getContext('2d'),H=330,PH=230,VH=62,R=62;
 function draw(){
-  const W=cv.clientWidth, dpr=window.devicePixelRatio||1;
-  cv.width=W*dpr; cv.height=H*dpr; cv.style.height=H+'px'; g.setTransform(dpr,0,0,dpr,0,0);
-  g.clearRect(0,0,W,H); g.font='11px sans-serif';
-  const all=group(per), cnt=Math.min(all.length,60), a=all.slice(-cnt); view=a;
-  const m5=ma(all,5).slice(-cnt), m20=ma(all,20).slice(-cnt);
-  const hi=Math.max(...a.map(d=>d.h)), lo=Math.min(...a.map(d=>d.l)), pad=(hi-lo)*.08;
-  const top=hi+pad, bot=lo-pad, cw=(W-R)/cnt, y=p=>10+(top-p)/(top-bot)*(PH-20);
-  // 가격 눈금
-  g.strokeStyle='#f2f4f6'; g.fillStyle='#8b95a1'; g.textAlign='right'; g.lineWidth=1;
-  for(let i=0;i<=4;i++){const p=bot+(top-bot)*i/4, yy=y(p); g.beginPath(); g.moveTo(0,yy); g.lineTo(W-R,yy); g.stroke(); g.fillText(fmt(p),W-4,yy+4);}
-  // 캔들
-  a.forEach((d,i)=>{const x=i*cw+cw/2, col=d.c>=d.o?UP:DN; g.strokeStyle=g.fillStyle=col;
-    g.beginPath(); g.moveTo(x,y(d.h)); g.lineTo(x,y(d.l)); g.stroke();
-    const t=y(Math.max(d.o,d.c)), b=y(Math.min(d.o,d.c)); g.fillRect(x-cw*.35,t,cw*.7,Math.max(1,b-t));});
-  // 이동평균
-  [[m5,'#ff9500'],[m20,'#34c759']].forEach(([m,col])=>{g.strokeStyle=col; g.beginPath(); let on=0;
-    m.forEach((v,i)=>{if(v==null)return; const x=i*cw+cw/2; on?g.lineTo(x,y(v)):g.moveTo(x,y(v)); on=1;}); g.stroke();});
-  // 현재가 표시
-  const cp=a[a.length-1].c, cy=y(cp), up=cp>=prev;
-  g.setLineDash([3,3]); g.strokeStyle=up?UP:DN; g.beginPath(); g.moveTo(0,cy); g.lineTo(W-R,cy); g.stroke(); g.setLineDash([]);
-  g.fillStyle=up?UP:DN; g.fillRect(W-R+2,cy-9,R-2,18); g.fillStyle='#fff'; g.fillText(fmt(cp),W-4,cy+4);
-  // 거래량
-  const vy=PH+8, vmax=Math.max(...a.map(d=>d.v));
-  g.strokeStyle='#e5e8eb'; g.beginPath(); g.moveTo(0,PH); g.lineTo(W,PH); g.stroke();
-  a.forEach((d,i)=>{g.fillStyle=d.c>=d.o?UP:DN; const h=d.v/vmax*(VH-8); g.fillRect(i*cw+cw*.15,vy+VH-8-h,cw*.7,h);});
-  g.fillStyle='#8b95a1'; g.textAlign='right'; g.fillText((vmax/1e3).toFixed(0)+'K',W-4,vy+8);
-  // 날짜
-  g.textAlign='center'; g.fillStyle='#8b95a1';
-  [0,.25,.5,.75].forEach(f=>{const i=Math.floor(f*(cnt-1)); const di=per==1?N-cnt+i:(a[i].i); g.fillText(date(di),i*cw+cw/2+(f==0?16:0),H-6);});
-  // 십자선
-  if(hover>=0&&hover<cnt){const x=hover*cw+cw/2; g.strokeStyle='#8b95a1'; g.setLineDash([2,3]); g.beginPath(); g.moveTo(x,0); g.lineTo(x,PH+VH); g.stroke(); g.setLineDash([]);}
-  info();
+  const W=cv.clientWidth; if(!W)return;
+  const UP=col('--up'),DN=col('--dn'),dpr=devicePixelRatio||1;
+  cv.width=W*dpr;cv.height=H*dpr;cv.style.height=H+'px';g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);g.font='11px sans-serif';
+  const all=group(per),fut=showIC?26:0,cnt=Math.min(all.length,showIC?44:60),s=all.length-cnt,cw=(W-R)/(cnt+fut),a=all.slice(s),ic=showIC&&ichi(all);
+  view=a;geo={cw,cnt};
+  let hi=Math.max(...a.map(d=>d.h)),lo=Math.min(...a.map(d=>d.l));
+  if(ic)for(let t=s;t<all.length+fut;t++)[ic.ten[t],ic.kij[t],ic.sa[t],ic.sb[t],ic.chi[t]].forEach(v=>{if(v!=null){hi=Math.max(hi,v);lo=Math.min(lo,v)}});
+  const pad=(hi-lo)*.08||1,top=hi+pad,bot=lo-pad,y=p=>10+(top-p)/(top-bot)*(PH-20),X=t=>(t-s)*cw+cw/2;
+  g.strokeStyle=col('--grid');g.fillStyle=col('--mut');g.textAlign='right';g.lineWidth=1;
+  for(let i=0;i<=4;i++){const p=bot+(top-bot)*i/4,yy=y(p);g.beginPath();g.moveTo(0,yy);g.lineTo(W-R,yy);g.stroke();g.fillText(fmt(p),W-4,yy+4)}
+  if(ic){ // 구름대
+    for(let t=s;t<all.length+fut-1;t++){const p=[ic.sa[t],ic.sb[t],ic.sa[t+1],ic.sb[t+1]];if(p.some(v=>v==null))continue;
+      g.fillStyle=(p[0]+p[2])>=(p[1]+p[3])?col('--upbg'):col('--dnbg');
+      g.beginPath();g.moveTo(X(t),y(p[0]));g.lineTo(X(t+1),y(p[2]));g.lineTo(X(t+1),y(p[3]));g.lineTo(X(t),y(p[1]));g.fill()}}
+  a.forEach((d,i)=>{const x=X(s+i),c=d.c>=d.o?UP:DN;g.strokeStyle=g.fillStyle=c;
+    g.beginPath();g.moveTo(x,y(d.h));g.lineTo(x,y(d.l));g.stroke();
+    const t=y(Math.max(d.o,d.c)),b=y(Math.min(d.o,d.c));g.fillRect(x-cw*.35,t,cw*.7,Math.max(1,b-t))});
+  const line=(arr,c,end=all.length-1)=>{g.strokeStyle=c;g.beginPath();let on=0;
+    for(let t=s;t<=end;t++){const v=arr[t];if(v==null){on=0;continue}on?g.lineTo(X(t),y(v)):g.moveTo(X(t),y(v));on=1}g.stroke()};
+  if(showMA){line(ma(all,5),'#ff9500');line(ma(all,20),'#34c759')}
+  if(ic){line(ic.ten,'#9aa3ad');line(ic.kij,'#34c759');line(ic.chi,'#ff9500');line(ic.sa,UP,all.length+25);line(ic.sb,DN,all.length+25)}
+  const cy=y(price),up=price>=prev;
+  g.setLineDash([3,3]);g.strokeStyle=up?UP:DN;g.beginPath();g.moveTo(0,cy);g.lineTo(W-R,cy);g.stroke();g.setLineDash([]);
+  g.fillStyle=up?UP:DN;g.fillRect(W-R+2,cy-9,R-2,18);g.fillStyle='#fff';g.fillText(fmt(price),W-4,cy+4);
+  const vy=PH+8,vmax=Math.max(...a.map(d=>d.v));
+  g.strokeStyle=col('--line');g.beginPath();g.moveTo(0,PH);g.lineTo(W,PH);g.stroke();
+  a.forEach((d,i)=>{g.fillStyle=d.c>=d.o?UP:DN;const h=d.v/vmax*(VH-8);g.fillRect(X(s+i)-cw*.35,vy+VH-8-h,cw*.7,h)});
+  g.fillStyle=col('--mut');g.textAlign='right';g.fillText((vmax/1e3).toFixed(0)+'K',W-4,vy+8);
+  g.textAlign='center';[0,.25,.5,.75].forEach(f=>{const i=Math.floor(f*(cnt-1));g.fillText(md(DT[a[i].i]),X(s+i)+(f?0:16),H-6)});
+  if(hover>=0&&hover<cnt){const x=X(s+hover);g.strokeStyle=col('--mut');g.setLineDash([2,3]);g.beginPath();g.moveTo(x,0);g.lineTo(x,PH+VH);g.stroke();g.setLineDash([])}
+  const d=view[hover>=0&&hover<cnt?hover:cnt-1],c=sgn(d.c-d.o)||'up';
+  $('info').innerHTML=`<b>${md(DT[d.i])}</b> &nbsp;<b>시</b> <span class="${c}">${fmt(d.o)}</span> <b>고</b> <span class="up">${fmt(d.h)}</span> <b>저</b> <span class="dn">${fmt(d.l)}</span> <b>종</b> <span class="${c}">${fmt(d.c)}</span><br><b>거래량</b> ${int(d.v)}`;
 }
-function info(){
-  const d=view[hover>=0?hover:view.length-1]; if(!d) return;
-  const c=d.c>=d.o?'up':'dn', p=hover>0?view[hover-1].c:(view.length>1?view[view.length-2].c:prev);
-  document.getElementById('info').innerHTML=
-    `<b>시</b> <span class="${c}">${fmt(d.o)}</span> &nbsp;<b>고</b> <span class="up">${fmt(d.h)}</span> &nbsp;<b>저</b> <span class="dn">${fmt(d.l)}</span> &nbsp;<b>종</b> <span class="${c}">${fmt(d.c)}</span><br>`+
-    `<b>거래량</b> ${fmt(d.v)} &nbsp;<span style="color:#ff9500">MA5</span> <span style="color:#34c759">MA20</span>`;
-}
-function head(){
-  const diff=price-prev, pct=diff/prev*100, c=diff>=0?'up':'dn', ar=diff>=0?'▲':'▼';
-  document.getElementById('nm').textContent=name;
-  document.getElementById('sb').textContent=`${code} | ${market} | ${cur}`;
-  const pr=document.getElementById('pr'); pr.textContent=fmt(price); pr.className='price '+c;
-  const ch=document.getElementById('ch'); ch.className='chg '+c; ch.textContent=`${ar} ${fmt(Math.abs(diff))}  ${Math.abs(pct).toFixed(2)}%`;
-}
-const at=e=>{const r=cv.getBoundingClientRect(); return Math.floor((e.clientX-r.left)/((r.width-R)/view.length))};
+const at=e=>{const r=cv.getBoundingClientRect(),j=Math.floor((e.clientX-r.left)/geo.cw);return j<geo.cnt?j:-1};
 cv.addEventListener('pointerdown',e=>{hover=at(e);draw()});
 cv.addEventListener('pointermove',e=>{if(e.buttons||e.pointerType=='mouse'){hover=at(e);draw()}});
 cv.addEventListener('pointerleave',()=>{hover=-1;draw()});
-document.getElementById('per').onclick=e=>{const b=e.target.closest('button'); if(!b)return;
-  per=+b.dataset.n; hover=-1; [...e.currentTarget.children].forEach(x=>x.classList.toggle('on',x==b)); draw()};
+$('per').onclick=e=>{const b=e.target.closest('button');if(!b)return;per=+b.dataset.n;hover=-1;[...e.currentTarget.children].forEach(x=>x.classList.toggle('on',x==b));draw()};
+$('bMA').onclick=e=>{showMA=!showMA;e.currentTarget.classList.toggle('on',showMA);draw()};
+$('bIC').onclick=e=>{showIC=!showIC;e.currentTarget.classList.toggle('on',showIC);draw()};
 
-// 주문은 버튼을 눌렀을 때만 보낸다 (한 턴 요금이 든다)
-const send=(kind,btn)=>{
-  if(typeof LT==='undefined'){msg.textContent='미리보기: 전송 안 됨';return}
-  btn.disabled=true;
-  LT.sendToAI(`[주문] ${name}(${code}) ${kind} — 현재가 ${fmt(price)}${cur}`).then(r=>{
-    btn.disabled=false; msg.textContent=r&&r.ok?'':'전송하지 못했어요'});
+// ---- 머리 줄 / 탭 ----
+function head(){
+  const d=price-prev,c=sgn(d);
+  $('nm').textContent=name;$('sb').textContent=`${code} | ${market} | ${cur}`;
+  $('pr').textContent=fmt(price);$('pr').className='price '+c;
+  $('ch').className=c;$('ch').textContent=`${d>=0?'▲':'▼'} ${fmt(Math.abs(d))}  ${Math.abs(d/prev*100).toFixed(2)}%`;
+}
+$('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;
+  [...$('tabs').children].forEach(x=>x.classList.toggle('on',x==b));
+  $('pc').hidden=b.dataset.t!='c';$('pb').hidden=b.dataset.t!='b';$('pm').hidden=b.dataset.t!='m';
+  if(b.dataset.t=='c')draw();if(b.dataset.t=='b')book();if(b.dataset.t=='m')mine()};
+
+// ---- 호가창 (가짜) ----
+const tick=V.tick?+V.tick:KRW?(price<2e3?1:price<5e3?5:price<2e4?10:price<5e4?50:price<2e5?100:price<5e5?500:1000):(price>=1?.01:.0001);
+function book(){
+  const r=mk(Math.round(price*100)%2147483647+1),q=()=>100+Math.floor(r()*9000),A=[],B=[];
+  for(let k=10;k>=1;k--)A.push([price+tick*k,q()]);
+  for(let k=0;k<10;k++)B.push([price-tick*k,q()]);
+  const mx=Math.max(...A.map(x=>x[1]),...B.map(x=>x[1])),pc=p=>{const d=(p-prev)/prev*100;return`<small>${d>0?'+':''}${d.toFixed(2)}%</small>`};
+  const row=(p,n,side)=>`<div class="bk"><div class="q a">${side?'':`<i style="width:${n/mx*100}%"></i><span>${int(n)}</span>`}</div><div class="p ${sgn(p-prev)}${p==price?' cur':''}">${fmt(p)}${pc(p)}</div><div class="q b">${side?`<i style="width:${n/mx*100}%"></i><span>${int(n)}</span>`:''}</div></div>`;
+  $('pb').innerHTML=A.map(x=>row(x[0],x[1],0)).join('')+B.map(x=>row(x[0],x[1],1)).join('')+
+    `<div class="bk sum"><div class="q a">${int(A.reduce((s,x)=>s+x[1],0))}</div><div class="p">잔량 합계</div><div class="q b">${int(B.reduce((s,x)=>s+x[1],0))}</div></div>`;
+}
+
+// ---- 잔고·보유 저장 (방 저장값 PF 하나에 JSON 문자열) ----
+const CASH0=num(V.cash,KRW?1e7:1e4), fresh=()=>({cash:CASH0,pos:{}});
+let PF=fresh(),busy=false;
+async function load(){
+  try{if(!LTok)return PF;const r=await LT.getValues(),o=r&&r.values&&typeof r.values=='object'?r.values:r||{};
+    let x=o.PF;if(typeof x=='string')x=JSON.parse(x);
+    if(x&&isFinite(x.cash)&&x.pos&&typeof x.pos=='object')return x}catch(e){}
+  return fresh();
+}
+async function save(st){
+  const j=JSON.stringify(st);if(j.length>1900)return{ok:false,error:'보유 종목이 너무 많아요'};
+  return LTok?await LT.setValue('PF',j):{ok:true};
+}
+function mine(){
+  const [q,avg]=PF.pos[code]||[0,0],val=q*price,cost=q*avg,pl=val-cost,others=Object.entries(PF.pos).filter(e=>e[0]!=code);
+  const oth=others.reduce((s,e)=>s+e[1][0]*e[1][1],0),r=(a,b,c)=>`<div class="r"><span>${a}</span><span class="${c||''}">${b}</span></div>`;
+  $('pm').innerHTML=`<div class="card">${r('현금',fmt(PF.cash)+cur)}${r('보유 수량',int(q)+'주')}${r('평균 단가',q?fmt(avg)+cur:'-')}${r('평가 금액',fmt(val)+cur)}`+
+    `${r('평가 손익',q?`${pl>0?'+':''}${fmt(pl)}${cur} (${pl>0?'+':''}${(cost?pl/cost*100:0).toFixed(2)}%)`:'-',q?sgn(pl):'')}`+
+    `${r('총 자산'+(others.length?' (다른 종목은 매입가)':''),fmt(PF.cash+val+oth)+cur)}</div><button class="rst" id="rst">잔고 초기화</button>`;
+  let t;$('rst').onclick=async e=>{const b=e.currentTarget;
+    if(!b.dataset.s){b.dataset.s=1;b.textContent='한 번 더 누르면 초기화돼요';t=setTimeout(()=>{delete b.dataset.s;b.textContent='잔고 초기화'},3000);return}
+    clearTimeout(t);PF=fresh();const s=await save(PF);msg(s.ok?'초기화했어요':'저장하지 못했어요: '+s.error);mine()};
+}
+const msg=t=>$('msg').textContent=t;
+
+// ---- 주문 창 ----
+let side=0,qty=1;
+const maxQ=()=>side?Math.floor((PF.pos[code]||[0])[0]):Math.floor(PF.cash/price);
+function sheet(){
+  const m=maxQ();qty=Math.max(m>0?1:0,Math.min(qty,m));
+  $('shT').textContent=(side?'매도':'매수')+' 주문';$('shT').className=side?'dn':'up';
+  $('shA').textContent=(side?'매도':'매수')+' 가능 '+int(m)+'주 · 현재가 '+fmt(price)+cur;
+  $('qi').value=qty;$('shS').textContent=fmt(qty*price)+cur;
+  $('ok').textContent=side?'매도 확인':'매수 확인';$('ok').className=side?'sell':'buy';$('ok').disabled=qty<1;
+}
+function openSheet(s){side=s;qty=1;msg('');$('ord').hidden=true;$('sheet').hidden=false;sheet()}
+function closeSheet(){$('sheet').hidden=true;$('ord').hidden=false}
+$('buy').onclick=()=>openSheet(0);$('sell').onclick=()=>openSheet(1);$('cancel').onclick=closeSheet;
+$('qm').onclick=()=>{qty--;sheet()};$('qp').onclick=()=>{qty++;sheet()};
+$('qi').oninput=e=>{qty=parseInt(e.target.value.replace(/\D/g,''))||0;sheet()};
+$('sheet').querySelector('.chips').onclick=e=>{const a=e.target.dataset.a;if(!a)return;qty=a=='max'?maxQ():qty+ +a;sheet()};
+$('ok').onclick=async()=>{
+  if(busy||qty<1)return;busy=true;$('ok').disabled=true;
+  const st=await load(),p=st.pos[code]||[0,0],n=qty,amt=n*price;let err='';
+  if(side?n>p[0]:amt>st.cash)err=side?'보유 수량이 부족해요':'잔고가 부족해요';
+  else if(side){st.cash+=amt;p[0]-=n;p[0]?st.pos[code]=p:delete st.pos[code]}
+  else{st.cash-=amt;st.pos[code]=[p[0]+n,+((p[0]*p[1]+amt)/(p[0]+n)).toFixed(dg)]}
+  st.cash=+st.cash.toFixed(dg);
+  if(!err){const s=await save(st);if(!s.ok)err='저장하지 못했어요: '+s.error}
+  if(err){msg(err);PF=await load()}
+  else{PF=st;msg(`${name} ${int(n)}주 ${side?'매도':'매수'} 체결 (${fmt(price)}${cur})`);closeSheet();mine();
+    if($('nf').checked&&LTok)LT.sendToAI(`[체결] ${name}(${code}) ${int(n)}주 ${side?'매도':'매수'} @${fmt(price)}${cur} · 잔고 ${fmt(st.cash)}${cur}`)}
+  busy=false;if(!$('sheet').hidden)sheet();
 };
-const msg=document.getElementById('msg');
-buy.onclick=()=>send('매수',buy); sell.onclick=()=>send('매도',sell);
 
-head(); draw(); addEventListener('resize',draw);
-if(typeof LT!=='undefined'&&LT.autosize) LT.autosize(true);
+head();draw();addEventListener('resize',draw);
+load().then(s=>{PF=s;mine()});
+if(LTok&&LT.autosize)LT.autosize(true);
 </script>

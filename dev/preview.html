@@ -2,16 +2,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>위젯 미리보기</title>
-<style>body{margin:0;background:#f4f5f7}iframe{border:0;width:100%;display:block;background:#fff}</style>
+<style>body{margin:0;background:#f4f5f7}iframe{border:0;width:100%;display:block}</style>
 <iframe id="f" height="560"></iframe>
 <script>
 // 사용법: preview.html?w=stock&name=루나전자&price=71200  (LT 는 가짜다)
-const q=new URLSearchParams(location.search), w=q.get('w')||'stock', vars={};
-q.forEach((v,k)=>{if(k!='w')vars[k]=v});
+// 저장값(setValue)은 이 브라우저의 localStorage 에 남는다. &reset=1 이면 비운다.
+const q=new URLSearchParams(location.search), w=q.get('w')||'stock', vars={}, KEY='lt-preview:'+w;
+q.forEach((v,k)=>{if(k!='w'&&k!='reset')vars[k]=v});
+if(q.get('reset'))localStorage.removeItem(KEY);
+window.STORE=JSON.parse(localStorage.getItem(KEY)||'{}');
 const mock=`<script>window.LT={vars:${JSON.stringify(vars)},
-sendToAI:t=>{console.log('sendToAI',t);return Promise.resolve({ok:true})},
-setValue:(k,v)=>{console.log('setValue',k,v);return Promise.resolve({ok:true})},
-getValues:()=>Promise.resolve({}),resize:h=>parent.document.getElementById('f').height=h,autosize:()=>{},
+sendToAI:t=>{console.log('sendToAI',t);parent.SENT=(parent.SENT||[]).concat(t);return Promise.resolve({ok:true})},
+setValue:(k,v)=>{parent.STORE[k]=v;parent.localStorage.setItem('${KEY}',JSON.stringify(parent.STORE));return Promise.resolve({ok:true})},
+getValues:()=>Promise.resolve(JSON.parse(JSON.stringify(parent.STORE))),
+resize:h=>parent.document.getElementById('f').height=h,
+autosize:()=>{const f=parent.document.getElementById('f'),fit=()=>f.height=document.documentElement.scrollHeight;
+  new ResizeObserver(fit).observe(document.documentElement);fit()},
 hidden:()=>({})};<\/script>`;
 fetch(`../widgets/${w}/index.html`).then(r=>r.text()).then(t=>{f.srcdoc=mock+t});
 </script>
