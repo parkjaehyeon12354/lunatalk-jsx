@@ -225,7 +225,7 @@ function openSheet(s){side=s;qty=1;msg('');$('ord').hidden=true;$('sheet').hidde
 function closeSheet(){$('sheet').hidden=true;$('ord').hidden=false}
 $('buy').onclick=()=>openSheet(0);$('sell').onclick=()=>openSheet(1);$('cancel').onclick=closeSheet;
 $('qm').onclick=()=>{qty--;sheet()};$('qp').onclick=()=>{qty++;sheet()};
-$('qi').oninput=e=>{qty=parseInt(e.target.value.replace(/\D/g,''))||0;sheet()};
+$('qi').oninput=e=>{qty=parseInt([...e.target.value].filter(c=>c>='0'&&c<='9').join(''))||0;sheet()};
 $('sheet').querySelector('.chips').onclick=e=>{const a=e.target.dataset.a;if(!a)return;qty=a=='max'?maxQ():qty+ +a;sheet()};
 $('ok').onclick=async()=>{
   if(busy||qty<1)return;busy=true;$('ok').disabled=true;
