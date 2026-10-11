@@ -1,0 +1,158 @@
+<style>
+:root{--bg:#fff;--fg:#373a3c;--mut:#777;--line:#dcdfe3;--card:#f6f7f8;--link:#0a6cc4;--miss:#d44a4a;--top:#2b3a67;--topfg:#fff;--note:#fff8e1;--noteb:#f0d98a;--hl:#fff3b0}
+.dark{--bg:#16181d;--fg:#d9dde3;--mut:#8b929c;--line:#2d3139;--card:#1e2128;--link:#6db3ff;--miss:#ff8585;--top:#1d2540;--topfg:#e8ecf5;--note:#2a2618;--noteb:#5a4f23;--hl:#4a4318}
+*{box-sizing:border-box;margin:0}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"Pretendard","Noto Sans KR",sans-serif;-webkit-text-size-adjust:100%}
+#w{max-width:560px;margin:0 auto}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:left}
+.bar{display:flex;align-items:center;gap:10px;background:var(--top);color:var(--topfg);padding:9px 14px}
+.logo{font-weight:800;letter-spacing:-.3px;display:flex;align-items:center;gap:6px}
+.logo svg{width:18px;height:18px}
+.srch{flex:1;min-width:0;background:rgba(255,255,255,.14);border-radius:6px;padding:5px 10px;font-size:12px;color:rgba(255,255,255,.7)}
+.page{padding:12px 14px 20px}
+.cats{display:flex;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--mut)}
+.cats span.a{color:var(--link)}
+h1{font-size:25px;line-height:1.25;letter-spacing:-.4px;margin:8px 0 2px;font-weight:700}
+h1 small{font-size:13px;color:var(--mut);font-weight:400;margin-left:6px}
+.meta{font-size:12px;color:var(--mut);padding-bottom:10px;border-bottom:1px solid var(--line)}
+.notice{background:var(--note);border:1px solid var(--noteb);border-radius:6px;padding:8px 12px;margin:12px 0;font-size:13px}
+.a{color:var(--link)}.miss{color:var(--miss)}
+.info{border:1px solid var(--line);border-radius:6px;overflow:hidden;margin:12px 0;font-size:13px}
+.info .t{background:var(--top);color:var(--topfg);text-align:center;padding:7px;font-weight:700}
+.info .img{display:flex;justify-content:center;padding:14px 0 6px;background:var(--card)}
+.info .img svg{width:132px;height:132px}
+.info .cap{text-align:center;color:var(--mut);font-size:12px;padding:0 8px 10px;background:var(--card)}
+.info dl{display:grid;grid-template-columns:84px 1fr}
+.info dt,.info dd{padding:7px 10px;border-top:1px solid var(--line)}
+.info dt{background:var(--card);font-weight:600;text-align:center}
+.toc{border:1px solid var(--line);border-radius:6px;padding:10px 14px;margin:14px 0;background:var(--card);display:inline-block;min-width:60%}
+.toc b{display:block;margin-bottom:4px}
+.toc button{display:block;padding:1px 0;color:var(--link);width:100%}
+.toc .s{padding-left:14px}
+.toc i{font-style:normal;color:var(--fg);margin-right:5px}
+.sec{margin-top:14px}
+.h{display:flex;align-items:center;gap:6px;width:100%;font-size:17px;font-weight:700;padding:6px 0;border-bottom:1px solid var(--line);color:var(--fg)}
+.h.s{font-size:15px;border:0;border-bottom:1px dashed var(--line)}
+.h .n{color:var(--link)}
+.h .ar{margin-left:auto;font-size:12px;color:var(--mut);transition:transform .15s}
+.sec.off>.h .ar{transform:rotate(-90deg)}
+.sec.off>.bd{display:none}
+.bd{padding:8px 0 0}
+.bd p{margin-bottom:8px}
+.sec.hl>.h{background:var(--hl)}
+sup.fn{color:var(--link);cursor:pointer;font-size:11px;padding:0 1px}
+#pop{margin:2px 0 10px;background:var(--card);border:1px solid var(--link);border-radius:8px;padding:9px 12px;font-size:13px}
+#pop b{color:var(--link);margin-right:6px}
+table.tb{width:100%;border-collapse:collapse;font-size:13px;margin:4px 0 8px}
+.tb th,.tb td{border:1px solid var(--line);padding:6px 8px;vertical-align:top}
+.tb th{background:var(--card);text-align:center;white-space:nowrap}
+ul.l{padding-left:18px;margin-bottom:8px}
+.fns{margin-top:18px;border-top:1px solid var(--line);padding-top:8px;font-size:12.5px;color:var(--mut)}
+.fns div{margin-bottom:4px}
+.fns b{color:var(--link);margin-right:5px}
+.foot{margin-top:18px;border:1px solid var(--line);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--mut);display:flex;gap:8px;flex-wrap:wrap}
+.lic{margin-top:10px;text-align:center;font-size:11px;color:var(--mut)}
+</style>
+<div id="w">
+  <div class="bar">
+    <div class="logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>달빛위키</div>
+    <div class="srch">문서 검색</div>
+  </div>
+  <div class="page">
+    <div class="cats"><span>분류:</span><span class="a">가상 인물</span><span class="a">월영당</span><span class="a">예시 문서</span></div>
+    <h1 id="ttl">서이안<small>(예시 문서)</small></h1>
+    <div class="meta">최근 수정 시각: <span id="mod">2026-10-11 14:02:37</span> · 편집 1회 · 열람 128회</div>
+    <div class="notice">이 문서는 레이아웃을 시험하려고 만든 <b>가상 인물 문서</b>입니다. 등장하는 인물과 장소는 모두 지어낸 것입니다.</div>
+
+    <div class="info">
+      <div class="t">서이안</div>
+      <div class="img"><svg viewBox="0 0 132 132"><rect width="132" height="132" rx="10" fill="#2b3a67"/><circle cx="96" cy="34" r="15" fill="#f4e7b2"/><circle cx="102" cy="30" r="13" fill="#2b3a67"/><path d="M30 128c2-26 16-40 36-40s34 14 36 40z" fill="#17203f"/><circle cx="66" cy="62" r="20" fill="#f1d2b8"/><path d="M44 62c-4-24 12-36 24-36s26 10 22 36c-4-10-10-16-22-16s-18 6-24 16z" fill="#b9bfd0"/><circle cx="59" cy="64" r="2.4" fill="#2b2f45"/><circle cx="73" cy="64" r="2.4" fill="#2b2f45"/><path d="M60 72q6 4 12 0" stroke="#a5604a" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M40 70l-3 9" stroke="#f4e7b2" stroke-width="2.4" stroke-linecap="round"/></svg></div>
+      <div class="cap">월영당 점장 (일러스트: 예시)</div>
+      <dl>
+        <dt>이름</dt><dd>서이안</dd>
+        <dt>나이</dt><dd>스물아홉</dd>
+        <dt>생일</dt><dd>11월 3일</dd>
+        <dt>소속</dt><dd>월영당</dd>
+        <dt>직업</dt><dd>서점 점장</dd>
+        <dt>키</dt><dd>168cm</dd>
+        <dt>취미</dt><dd>중고 책 수선, 밤 산책</dd>
+        <dt>좋아함</dt><dd>종이 냄새, 따뜻한 보리차</dd>
+        <dt>싫어함</dt><dd>책 모서리 접기</dd>
+      </dl>
+    </div>
+
+    <div class="toc" id="toc"><b>목차</b></div>
+
+    <div class="sec" id="s1"><button class="h"><span class="n">1.</span> 개요<span class="ar">▼</span></button><div class="bd">
+      <p>서이안은 가상의 서점 <span class="a">월영당</span>의 점장이다. 밤 열한 시에만 문을 여는 서점을 혼자 꾸려 가며,<sup class="fn" data-n="1">[1]</sup> 손님이 없는 시간에는 낡은 책을 고쳐 다시 진열한다.</p>
+      <p>이 서점의 단골은 대부분 잠이 오지 않는 사람들이라, 서이안은 책을 권하기보다 <span class="miss">따뜻한 차</span>를 먼저 내어 주는 인물로 알려져 있다.</p>
+    </div></div>
+
+    <div class="sec" id="s2"><button class="h"><span class="n">2.</span> 설정<span class="ar">▼</span></button><div class="bd">
+      <div class="sec" id="s21"><button class="h s"><span class="n">2.1.</span> 외모<span class="ar">▼</span></button><div class="bd">
+        <p>은회색 단발에 짙은 남색 앞치마를 두른다. 왼쪽 귀에 초승달 모양 귀걸이를 하고 있으며, 서점 안에서는 늘 장갑을 낀다.</p>
+      </div></div>
+      <div class="sec" id="s22"><button class="h s"><span class="n">2.2.</span> 성격<span class="ar">▼</span></button><div class="bd">
+        <p>말수가 적고 침착하다. 손님이 책을 고르는 동안에는 절대 말을 걸지 않는다. 대신 계산대에 짧은 메모를 남겨 두는 습관이 있다.<sup class="fn" data-n="2">[2]</sup></p>
+      </div></div>
+      <div class="sec" id="s23"><button class="h s"><span class="n">2.3.</span> 특기<span class="ar">▼</span></button><div class="bd">
+        <ul class="l"><li>책 냄새만 맡고 <b>판본과 인쇄 연도</b>를 맞힌다.</li><li>찢어진 책등을 하루 안에 수선한다.</li><li>어떤 책이 어느 선반에 있는지 모두 외우고 있다.</li></ul>
+      </div></div>
+    </div></div>
+
+    <div class="sec" id="s3"><button class="h"><span class="n">3.</span> 인간관계<span class="ar">▼</span></button><div class="bd">
+      <table class="tb"><tr><th>인물</th><th>관계</th><th>비고</th></tr>
+        <tr><td><span class="a">윤하루</span></td><td>단골</td><td>매일 자정 무렵에 온다</td></tr>
+        <tr><td><span class="a">정도윤</span></td><td>옆 가게 주인</td><td>새벽마다 빵을 나눠 준다</td></tr>
+        <tr><td><span class="miss">한소율</span></td><td>납품 담당</td><td>문서 없음</td></tr></table>
+    </div></div>
+
+    <div class="sec" id="s4"><button class="h"><span class="n">4.</span> 작중 행적<span class="ar">▼</span></button><div class="bd">
+      <table class="tb"><tr><th>시기</th><th>내용</th></tr>
+        <tr><td>1막</td><td>폐업 위기의 서점을 야간 영업으로 되살린다.</td></tr>
+        <tr><td>2막</td><td>사라진 고서의 행방을 단골들과 함께 추적한다.</td></tr>
+        <tr><td>3막</td><td>서점의 오래된 비밀과 마주하고, 마지막 선택을 한다.</td></tr></table>
+    </div></div>
+
+    <div class="sec" id="s5"><button class="h"><span class="n">5.</span> 여담<span class="ar">▼</span></button><div class="bd">
+      <ul class="l"><li>서점 이름 월영당은 달이 비치는 집이라는 뜻으로 지어졌다.</li><li>이 문서는 위키 화면을 시험하기 위한 예시다.<sup class="fn" data-n="3">[3]</sup></li></ul>
+    </div></div>
+
+    <div id="pop" hidden></div>
+
+    <div class="fns" id="fns">
+      <div id="f1"><b>[1]</b> 영업 시간은 23:00부터 04:00까지다.</div>
+      <div id="f2"><b>[2]</b> 메모는 항상 연필로 쓴다.</div>
+      <div id="f3"><b>[3]</b> 가상의 설정이며 실제 인물·장소와 관계없다.</div>
+    </div>
+    <div class="foot"><span>분류:</span><span class="a">가상 인물</span><span class="a">월영당</span><span class="a">예시 문서</span></div>
+    <div class="lic">달빛위키 예시 문서 · 내용은 모두 가상입니다</div>
+  </div>
+</div>
+<script>
+const $=id=>document.getElementById(id), V=(typeof LT!=='undefined'&&LT.vars)||{};
+document.documentElement.className=V.theme==='dark'?'dark':'';
+if(V.title){$('ttl').firstChild.nodeValue=V.title}
+if(V.mod)$('mod').textContent=V.mod;
+// 목차
+const toc=$('toc');
+document.querySelectorAll('.sec').forEach(s=>{
+  const h=s.querySelector(':scope>.h'),sub=h.classList.contains('s'),n=h.querySelector('.n').textContent;
+  const b=document.createElement('button');if(sub)b.className='s';
+  b.innerHTML='<i>'+n+'</i>'+h.childNodes[1].textContent.trim();b.dataset.t=s.id;toc.appendChild(b)});
+// 접기·펼치기
+document.querySelectorAll('.h').forEach(h=>h.onclick=()=>h.parentNode.classList.toggle('off'));
+// 목차 항목: 해당 문단을 열고 잠깐 강조 (채팅 창 안에서는 화면 이동이 안 되므로)
+toc.onclick=e=>{const b=e.target.closest('button');if(!b)return;
+  const s=$(b.dataset.t);for(let p=s;p&&p.classList;p=p.parentNode)if(p.classList.contains('sec'))p.classList.remove('off');
+  s.classList.add('hl');setTimeout(()=>s.classList.remove('hl'),1400)};
+// 각주 팝업
+let cur='';
+document.querySelectorAll('sup.fn').forEach(f=>f.onclick=()=>{
+  const n=f.dataset.n,p=$('pop');
+  if(cur===n){p.hidden=true;cur='';return}
+  cur=n;p.innerHTML=$('f'+n).innerHTML;f.closest('p,li').after(p);p.hidden=false});
+$('pop').onclick=()=>{$('pop').hidden=true;cur=''};
+if(typeof LT!=='undefined'&&LT.autosize)LT.autosize(true);
+</script>

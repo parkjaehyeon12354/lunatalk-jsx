@@ -37,6 +37,7 @@ CLAUDE.md         LUNATALK JSX 규칙 요약 (작업할 때 먼저 읽는 파일
 | 위젯 | 폴더 | 설명 |
 |---|---|---|
 | 주식 | [`widgets/stock/`](widgets/stock/README.md) | 모바일 증권앱 화면. 캔들·이동평균·일목균형표·거래량, 호가창, 수량 주문, 잔고·보유 저장, 다크 테마. 가상 시세 |
+| 위키 | `widgets/wiki/` | 위키 문서 화면. 정보 상자, 목차, 접기, 각주 팝업, 표, 분류, 다크 테마. 가상 인물 예시 문서 |
 
 미리보기: 저장소 루트에서 `python3 -m http.server` 를 띄우고 `dev/preview.html?w=stock&name=루나전자&price=71200&prev=70500` 를 엽니다.
 저장값은 브라우저 localStorage 에 남고, `&reset=1` 을 붙이면 비웁니다.

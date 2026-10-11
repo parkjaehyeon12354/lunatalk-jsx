@@ -16,8 +16,8 @@ sendToAI:t=>{console.log('sendToAI',t);parent.SENT=(parent.SENT||[]).concat(t);r
 setValue:(k,v)=>{parent.STORE[k]=v;parent.localStorage.setItem('${KEY}',JSON.stringify(parent.STORE));return Promise.resolve({ok:true})},
 getValues:()=>Promise.resolve(JSON.parse(JSON.stringify(parent.STORE))),
 resize:h=>parent.document.getElementById('f').height=h,
-autosize:()=>{const f=parent.document.getElementById('f'),fit=()=>f.height=document.documentElement.scrollHeight;
-  new ResizeObserver(fit).observe(document.documentElement);fit()},
+autosize:()=>{const f=parent.document.getElementById('f'),fit=()=>f.height=Math.ceil(document.body.getBoundingClientRect().height);
+  new ResizeObserver(fit).observe(document.body);fit()},
 hidden:()=>({})};<\/script>`;
-fetch(`../widgets/${w}/index.html`).then(r=>r.text()).then(t=>{f.srcdoc=mock+t});
+fetch(`../widgets/${w}/index.html`).then(r=>r.text()).then(t=>{f.srcdoc='<!doctype html>'+mock+t});
 </script>
